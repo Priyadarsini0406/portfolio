@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+<title>Priyadarsini K J — Dive Into My Digital Ocean</title>
+<meta name="description" content="Portfolio of Priyadarsini K J — MCA Student at Sona College of Technology, Full-Stack & Web Development, Prompt Engineering & Cloud Solutions." />
+
+<!-- Core Libraries (React 18, Babel, Three.js r128, GSAP 3.12, Tailwind CSS) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --abyss-900: #01050a;
+    --abyss-800: #020a14;
+    --deep-700: #04121f;
+    --deep-600: #06192c;
+    --ocean-500: #0a2f4d;
+    --ocean-400: #0f4c75;
+    --teal-glow: #3fd8c9;
+    --teal-bright: #7ff4e0;
+    --gold: #e8c17a;
+    --gold-bright: #f6dca0;
+    --foam: #dff7f2;
+    --ink-dim: #7fa6ab;
+  }
+  
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--abyss-900);
+    color: var(--foam);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+    user-select: none;
+  }
+  .font-display { font-family: 'Cormorant Garamond', serif; }
+  
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--abyss-900); }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--ocean-400), var(--teal-glow));
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--teal-bright); }
+
+  /* Glassmorphism Styles */
+  .glass {
+    background: linear-gradient(135deg, rgba(15,76,117,0.18), rgba(2,10,20,0.55));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(127,244,224,0.14);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+  .glass-strong {
+    background: linear-gradient(160deg, rgba(15,76,117,0.32), rgba(1,5,10,0.85));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(127,244,224,0.25);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Glow Effects */
+  .text-glow { text-shadow: 0 0 18px rgba(127,244,224,0.55), 0 0 48px rgba(63,216,201,0.25); }
+  .gold-glow { text-shadow: 0 0 18px rgba(246,220,160,0.5); }
+  
+  .section-eyebrow {
+    letter-spacing: .3em;
+    font-size: .75rem;
+    color: var(--teal-glow);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .depth-marker {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: .7rem;
+    letter-spacing: .15em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+  }
+  
+  /* Fixed Fullscreen Background Canvas */
+  .canvas-fixed {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  section { position: relative; z-index: 2; }
+
+  /* Buttons */
+  .btn-primary {
+    background: linear-gradient(135deg, var(--teal-glow), #1fa393);
+    color: #01141a;
+    font-weight: 700;
+    box-shadow: 0 0 30px rgba(63,216,201,0.35), inset 0 1px 0 rgba(255,255,255,0.4);
+    transition: all .35s cubic-bezier(.2,.8,.2,1);
+    cursor: pointer;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 10px 45px rgba(63,216,201,0.6);
+  }
+
+  .btn-outline {
+    border: 1px solid rgba(127,244,224,0.4);
+    color: var(--teal-bright);
+    transition: all .3s ease;
+    cursor: pointer;
+  }
+  .btn-outline:hover {
+    background: rgba(63,216,201,0.15);
+    border-color: var(--teal-bright);
+    box-shadow: 0 0 20px rgba(127,244,224,0.3);
+  }
+
+  /* Interactive Elements */
+  .fish-chip {
+    transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease;
+    animation: fishFloat 6s ease-in-out infinite;
+  }
+  .fish-chip:hover {
+    transform: translateY(-8px) scale(1.06);
+    box-shadow: 0 0 35px rgba(63,216,201,0.5);
+  }
+  @keyframes fishFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .crystal {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    transition: transform .4s cubic-bezier(.2,.8,.2,1), filter .4s ease;
+  }
+  .crystal:hover {
+    transform: scale(1.1) rotate(3deg);
+    filter: brightness(1.35) drop-shadow(0 0 15px rgba(127,244,224,0.6));
+  }
+
+  .timeline-line {
+    background: linear-gradient(180deg, transparent, var(--teal-glow), var(--teal-bright), transparent);
+  }
+
+  .modal-backdrop {
+    background: radial-gradient(circle at 50% 30%, rgba(15,76,117,0.45), rgba(1,5,10,0.95));
+    backdrop-filter: blur(8px);
+  }
+
+  .loader-bg {
+    background: radial-gradient(circle at 50% 40%, #06192c 0%, #02090f 55%, #01050a 100%);
+  }
+
+  input, textarea {
+    background: rgba(6,25,44,0.6);
+    border: 1px solid rgba(127,244,224,0.25);
+    color: var(--foam);
+    transition: all .3s ease;
+  }
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--teal-glow);
+    box-shadow: 0 0 18px rgba(63,216,201,0.25);
+    background: rgba(6,25,44,0.85);
+  }
+  input::placeholder, textarea::placeholder { color: #5b8388; }
+
+  .nav-dot { transition: all .3s ease; }
+  .nav-dot.active {
+    background: var(--teal-bright);
+    box-shadow: 0 0 14px var(--teal-glow);
+    transform: scale(1.5);
+  }
+
+  .caustics {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(63,216,201,0.07), transparent 40%),
+      radial-gradient(circle at 80% 60%, rgba(63,216,201,0.06), transparent 45%),
+      radial-gradient(circle at 50% 90%, rgba(15,76,117,0.18), transparent 50%);
+    pointer-events: none;
+  }
+
+  .sound-pulse {
+    animation: audioPulse 1.5s ease-in-out infinite alternate;
+  }
+  @keyframes audioPulse {
+    0% { box-shadow: 0 0 5px rgba(127,244,224,0.3); }
+    100% { box-shadow: 0 0 20px rgba(127,244,224,0.8); }
+  }
+
+  /* Sonar & Beacon Animations */
+  @keyframes radarSweep {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes sonarPulse {
+    0% { transform: scale(0.3); opacity: 0.9; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(0.6); opacity: 1; }
+    100% { transform: translateY(-140px) scale(1.3); opacity: 0; }
+  }
+  .radar-sweep {
+    animation: radarSweep 4s linear infinite;
+  }
+  .sonar-wave {
+    animation: sonarPulse 2.5s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+  }
+  .bubble-float {
+    animation: floatUp 2.8s ease-out forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel" data-type="module" data-presets="react">
+const { useState, useEffect, useRef } = React;
+gsap.registerPlugin(ScrollTrigger);
+
+/* ============================================================
+   WEB AUDIO API SOUND SYNTHESIZER
+============================================================ */
+class SoundEngine {
+  constructor() {
+    this.ctx = null;
+    this.ambientGain = null;
+    this.isPlaying = false;
+  }
+
+  init() {
+    if (this.ctx) return;
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    this.ctx = new AudioCtx();
+
+    const bufferSize = this.ctx.sampleRate * 2;
+    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
+
+    const whiteNoise = this.ctx.createBufferSource();
+    whiteNoise.buffer = noiseBuffer;
+    whiteNoise.loop = true;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(180, this.ctx.currentTime);
+
+    this.ambientGain = this.ctx.createGain();
+    this.ambientGain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+
+    whiteNoise.connect(filter);
+    filter.connect(this.ambientGain);
+    this.ambientGain.connect(this.ctx.destination);
+    whiteNoise.start(0);
+  }
+
+  toggle(enable) {
+    if (enable) {
+      this.init();
+      if (this.ctx && this.ctx.state === 'suspended') {
+        this.ctx.resume();
+      }
+      this.isPlaying = true;
+    } else {
+      if (this.ctx && this.ctx.state === 'running') {
+        this.ctx.suspend();
+      }
+      this.isPlaying = false;
+    }
+  }
+
+  playBubble() {
+    if (!this.isPlaying || !this.ctx) return;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    const now = this.ctx.currentTime;
+    osc.frequency.setValueAtTime(300 + Math.random() * 300, now);
+    osc.frequency.exponentialRampToValueAtTime(800 + Math.random() * 400, now + 0.12);
+
+    gain.gain.setValueAtTime(0.08, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.13);
+  }
+}
+
+const audioEngine = new SoundEngine();
+
+/* ============================================================
+   USER REAL DATA DEFINITIONS
+============================================================ */
+const PERSONAL_INFO = {
+  name: "PRIYADARSINI K J",
+  title: "MCA Postgraduate Student | Web Developer & Prompt Engineer",
+  email: "priyadarsini0406@gmail.com",
+  phone: "+91 9360951730",
+  location: "Salem, Tamil Nadu",
+  linkedin: "https://www.linkedin.com/in/priyadarsini04",
+  resumeFile: "priya resume 2026.pdf",
+  objective: "Adaptable and organized individual with strong problem-solving skills and the ability to work effectively in teams. Eager to contribute innovative ideas and achieve organizational goals with dedication and professionalism. Quick learner with a passion for continuous improvement and skill development."
+};
+
+const SKILLS = [
+  { name: "HTML & CSS", category: "Frontend", level: 92, color: "#ff8a5c" },
+  { name: "JavaScript", category: "Frontend", level: 88, color: "#f6dca0" },
+  { name: "SvelteKit & Tailwind", category: "Frontend", level: 86, color: "#7ff4e0" },
+  { name: "Data Structures & DBMS", category: "Core", level: 85, color: "#c9a8ff" },
+  { name: "SQL & MySQL", category: "Database", level: 84, color: "#a8e6cf" },
+  { name: "AWS Cloud (EC2, S3, RDS)", category: "Cloud", level: 82, color: "#5cc8ff" },
+  { name: "Firebase Backend", category: "Database/Cloud", level: 80, color: "#ffb27a" },
+  { name: "Python (Basics)", category: "Backend", level: 78, color: "#8fd4ff" },
+  { name: "Java (Basics)", category: "Backend", level: 75, color: "#ff9d7a" },
+  { name: "MongoDB (Basics)", category: "Database", level: 76, color: "#7ce38a" },
+  { name: "Prompt Engineering", category: "AI & Future Skills", level: 90, color: "#e8c17a" },
+  { name: "Web Designing", category: "UI/UX", level: 88, color: "#3fd8c9" },
+];
+
+const EDUCATION = [
+  { 
+    title: "Master of Computer Applications (MCA)", 
+    place: "Sona College of Technology, Anna University", 
+    year: "2025 – 2027", 
+    score: "CGPA: 8.3 / 10 (Till 1st Sem)" 
+  },
+  { 
+    title: "Bachelor of Computer Science (B.Sc)", 
+    place: "Jairam Arts and Science College, Periyar University", 
+    year: "2022 – 2025", 
+    score: "CGPA: 7.9 / 10" 
+  },
+  { 
+    title: "Higher Secondary Certificate (HSC)", 
+    place: "Jairam Higher Secondary School", 
+    year: "2021 – 2022", 
+    score: "90.5%" 
+  },
+  { 
+    title: "Secondary School Leaving Certificate (SSLC)", 
+    place: "Jairam Higher Secondary School", 
+    year: "2019 – 2020", 
+    score: "67.4%" 
+  },
+];
+
+const PROJECTS = [
+  {
+    name: "Learnify",
+    tagline: "An E-Learning Cloud Platform",
+    desc: "Architected a scalable cloud-based learning system featuring secure user authentication, course enrollment, normalized database schema for users/quizzes/certifications, role-based admin controls, and an automated certificate generation module for course completion.",
+    stack: ["PHP", "MySQL", "AWS (EC2, RDS, S3, IAM)"],
+    github: "https://github.com/", demo: "#"
+  },
+  {
+    name: "Campus-repo",
+    tagline: "Student Project Management System",
+    desc: "Developed a centralized student project management system with secure user authentication, project upload dashboard, Firebase-based file storage & metadata management, and role-based admin controls enabling students to securely upload, organize, and retrieve project files.",
+    stack: ["SvelteKit", "Tailwind CSS", "Firebase", "Vercel"],
+    github: "https://github.com/", demo: "#"
+  },
+];
+
+const INTERNSHIPS = [
+  {
+    title: "MERN Stack Intern",
+    org: "LiveWire",
+    duration: "2 Weeks Intensive Internship",
+    img: "mern-certificate.png",
+    desc: "Developed and deployed scalable web applications, gaining hands-on experience in modern development workflows using MongoDB, Express, React, and Node.js.",
+    skillsLearned: ["MERN Stack", "CRUD Workflows", "Web Deployment", "API Integration"]
+  },
+];
+
+const CERTIFICATIONS = [
+  { 
+    title: "Svelte Web Development", 
+    org: "Guvi / Certificate of Completion", 
+    img: "svelte-certificate.png",
+    desc: "Certified in building lightweight, highly reactive component-driven web interfaces using Svelte framework concepts." 
+  },
+  { 
+    title: "Programming In Java", 
+    org: "NPTEL / IIT Kharagpur", 
+    img: "nptel-java.png",
+    desc: "Completed NPTEL certification in Java programming fundamentals, object-oriented concepts, data structures, and application logic." 
+  },
+  { 
+    title: "CRUD Operations using MERN Stack", 
+    org: "LiveWire", 
+    img: "mern-certificate.png",
+    desc: "Hands-on certification in full-stack data flow, RESTful API design, and database interaction using MongoDB, Express, React, and Node.js." 
+  },
+  { 
+    title: "Digital 101 Course", 
+    org: "NASSCOM FutureSkills Prime", 
+    img: "digital-101 nasscom.png",
+    desc: "Certified in digital technologies, cloud fundamentals, and future skills through NASSCOM FutureSkills Prime." 
+  },
+  { 
+    title: "Fundamentals of Coding and Cloud", 
+    org: "SmartBridge (via Naan Mudhalvan)", 
+    desc: "Certified in cloud computing fundamentals, cloud architecture, and modern coding practices through Naan Mudhalvan initiative." 
+  },
+  { 
+    title: "Web Development Using AI", 
+    org: "SymphoZen Labs", 
+    desc: "Certified in building intelligent web interfaces and incorporating AI tools directly into modern developer workflows." 
+  },
+];
+
+const ACHIEVEMENTS = [
+  { 
+    title: "First Prize in Prompt Creation", 
+    category: "AI & Innovation", 
+    desc: "Secured First Prize in Prompt Creation competition for crafting precise, effective AI prompts and model workflows." 
+  },
+  { 
+    title: "First Prize — Speakers Forum", 
+    category: "Oratory Excellence", 
+    desc: "Secured First Prize in the Speakers Forum competition conducted by Sona College of Technology." 
+  },
+  { 
+    title: "First Prize — Tamil Oratory Competition", 
+    category: "State Oratory", 
+    desc: "Secured First Prize in Tamil Oratory competition conducted at PSG College of Arts and Science." 
+  },
+];
+
+const COCURRICULAR = [
+  { title: "Debugging Workshop", org: "Vinayaka Missions", desc: "Attended hands-on technical debugging workshop covering practical code analysis and error diagnosis." },
+  { title: "Artificial Intelligence Webinar", org: "KSR College of Arts and Science", desc: "Participated in specialized webinar exploring key AI concepts and future application trends." }
+];
+
+const SECTIONS = ["hero", "about", "education", "skills", "projects", "internship", "certification", "achievements", "resume", "contact"];
+
+const SECTION_LABELS = {
+  hero: "Surface", about: "Reef (20m)", education: "Timeline (40m)", skills: "School of Fish (60m)",
+  projects: "Shipwreck (80m)", internship: "Jellyfish Lab (100m)", certification: "Octopus Cave (120m)",
+  achievements: "Pearl Bed (140m)", resume: "Open Water (160m)", contact: "Abyss (200m)"
+};
+
+/* ============================================================
+   THREE.JS 3D OCEAN SCENE
+============================================================ */
+function OceanCanvas({ diveProgressRef }) {
+  const mountRef = useRef(null);
+
+  useEffect(() => {
+    const mount = mountRef.current;
+    if (!mount) return;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 2000);
+    camera.position.set(0, 0, 60);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    mount.appendChild(renderer.domElement);
+
+    scene.fog = new THREE.FogExp2(0x021018, 0.0035);
+
+    const ambient = new THREE.AmbientLight(0x0f4c75, 1.2);
+    scene.add(ambient);
+
+    const mainLight = new THREE.DirectionalLight(0x7ff4e0, 0.9);
+    mainLight.position.set(0, 100, 50);
+    scene.add(mainLight);
+
+    const particleCount = width < 768 ? 300 : 700;
+    const pGeo = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const speeds = new Float32Array(particleCount);
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 450;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 700 - 100;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 350;
+      speeds[i] = 0.03 + Math.random() * 0.07;
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const pMat = new THREE.PointsMaterial({
+      color: 0x7ff4e0, size: 1.1, transparent: true, opacity: 0.6,
+      blending: THREE.AdditiveBlending, depthWrite: false
+    });
+    const particles = new THREE.Points(pGeo, pMat);
+    scene.add(particles);
+
+    const fishGroup = new THREE.Group();
+    const fishGeo = new THREE.ConeGeometry(1.5, 4.5, 4);
+    fishGeo.rotateZ(Math.PI / 2);
+    const fishMat = new THREE.MeshBasicMaterial({ color: 0x0a2f4d, transparent: true, opacity: 0.65 });
+    const fishes = [];
+    const fishCount = width < 768 ? 10 : 20;
+
+    for (let i = 0; i < fishCount; i++) {
+      const f = new THREE.Mesh(fishGeo, fishMat);
+      f.position.set((Math.random() - 0.5) * 260, (Math.random() - 0.5) * 250 - 50, (Math.random() - 0.5) * 160 - 50);
+      f.userData = {
+        speed: 0.12 + Math.random() * 0.22,
+        radius: 25 + Math.random() * 45,
+        angle: Math.random() * Math.PI * 2,
+        yOff: f.position.y,
+        centerX: (Math.random() - 0.5) * 220,
+        centerZ: (Math.random() - 0.5) * 120
+      };
+      fishGroup.add(f);
+      fishes.push(f);
+    }
+    scene.add(fishGroup);
+
+    const jellyGroup = new THREE.Group();
+    for (let i = 0; i < 12; i++) {
+      const g = new THREE.Group();
+      const bell = new THREE.Mesh(
+        new THREE.SphereGeometry(2.2 + Math.random() * 1.5, 14, 10, 0, Math.PI * 2, 0, Math.PI / 1.6),
+        new THREE.MeshBasicMaterial({ color: 0x3fd8c9, transparent: true, opacity: 0.32, wireframe: true })
+      );
+      g.add(bell);
+
+      const innerCore = new THREE.Mesh(
+        new THREE.SphereGeometry(1.0, 8, 8),
+        new THREE.MeshBasicMaterial({ color: 0x7ff4e0, transparent: true, opacity: 0.7 })
+      );
+      g.add(innerCore);
+
+      const light = new THREE.PointLight(0x3fd8c9, 1.5, 30);
+      g.add(light);
+
+      g.position.set((Math.random() - 0.5) * 240, -180 - Math.random() * 450, (Math.random() - 0.5) * 160);
+      g.userData = { speed: 0.04 + Math.random() * 0.07, phase: Math.random() * Math.PI * 2 };
+      jellyGroup.add(g);
+    }
+    scene.add(jellyGroup);
+
+    const mouse = { x: 0, y: 0 };
+    const onMouseMove = (e) => {
+      mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouse.y = (e.clientY / window.innerHeight - 0.5) * 2;
+    };
+    window.addEventListener('mousemove', onMouseMove);
+
+    const onResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener('resize', onResize);
+
+    let raf;
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      const t = clock.getElapsedTime();
+      const dive = diveProgressRef.current || 0;
+
+      camera.position.x += (mouse.x * 10 - camera.position.x) * 0.025;
+      camera.position.y = -dive * 600 + Math.sin(t * 0.2) * 2.5 + (-mouse.y * 5);
+      camera.lookAt(0, camera.position.y - 5, 0);
+
+      scene.fog.density = 0.002 + dive * 0.0045;
+      const surfaceColor = new THREE.Color(0x04121f);
+      const abyssColor = new THREE.Color(0x000204);
+      const currentBg = surfaceColor.clone().lerp(abyssColor, Math.min(dive * 1.3, 1));
+      renderer.setClearColor(currentBg, 0);
+
+      const posAttr = pGeo.attributes.position;
+      for (let i = 0; i < particleCount; i++) {
+        posAttr.array[i * 3 + 1] += speeds[i];
+        posAttr.array[i * 3] += Math.sin(t * 0.8 + i) * 0.02;
+        if (posAttr.array[i * 3 + 1] > camera.position.y + 350) {
+          posAttr.array[i * 3 + 1] = camera.position.y - 350;
+        }
+      }
+      posAttr.needsUpdate = true;
+
+      fishes.forEach((f, i) => {
+        const d = f.userData;
+        d.angle += d.speed * 0.012;
+        f.position.x = d.centerX + Math.cos(d.angle) * d.radius + mouse.x * 4;
+        f.position.z = d.centerZ + Math.sin(d.angle) * d.radius;
+        f.position.y = d.yOff + Math.sin(t * 0.6 + i) * 3.5;
+        f.rotation.y = -d.angle + Math.PI / 2;
+      });
+
+      jellyGroup.children.forEach((g, i) => {
+        g.position.y += Math.sin(t * g.userData.speed * 12 + g.userData.phase) * 0.03;
+        g.position.x += Math.sin(t * 0.15 + i) * 0.015;
+        const pLight = g.children[2];
+        if (pLight) pLight.intensity = 1.0 + Math.sin(t * 2.0 + g.userData.phase) * 0.6;
+      });
+
+      particles.rotation.y = t * 0.004;
+
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('resize', onResize);
+      if (mount.contains(renderer.domElement)) {
+        mount.removeChild(renderer.domElement);
+      }
+      pGeo.dispose(); pMat.dispose(); fishGeo.dispose(); fishMat.dispose();
+      renderer.dispose();
+    };
+  }, []);
+
+  return <div ref={mountRef} className="canvas-fixed" />;
+}
+
+/* ============================================================
+   BUBBLE TRAIL CURSOR
+============================================================ */
+function BubbleTrail() {
+  useEffect(() => {
+    let lastTime = 0;
+    const onMove = (e) => {
+      const now = Date.now();
+      if (now - lastTime < 50) return;
+      lastTime = now;
+
+      const bubble = document.createElement('div');
+      bubble.className = 'fixed rounded-full pointer-events-none z-40';
+      const size = 5 + Math.random() * 9;
+      bubble.style.width = `${size}px`;
+      bubble.style.height = `${size}px`;
+      bubble.style.left = `${e.clientX - size / 2}px`;
+      bubble.style.top = `${e.clientY - size / 2}px`;
+      bubble.style.background = 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(63,216,201,0.25))';
+      bubble.style.border = '1px solid rgba(127,244,224,0.5)';
+      bubble.style.boxShadow = '0 0 8px rgba(127,244,224,0.4)';
+      document.body.appendChild(bubble);
+
+      gsap.to(bubble, {
+        y: -70 - Math.random() * 45,
+        x: (Math.random() - 0.5) * 35,
+        opacity: 0,
+        duration: 1.5 + Math.random() * 0.5,
+        ease: 'power1.out',
+        onComplete: () => bubble.remove()
+      });
+    };
+    window.addEventListener('mousemove', onMove);
+    return () => window.removeEventListener('mousemove', onMove);
+  }, []);
+  return null;
+}
+
+/* ============================================================
+   LOADING SCREEN COMPONENT
+============================================================ */
+function LoadingScreen({ onDone }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const tl = gsap.timeline({ onComplete: onDone });
+    tl.to("#loader-diver", { y: -25, duration: 1.1, ease: "sine.inOut", repeat: 1, yoyo: true })
+      .to("#loader-bar-fill", { width: "100%", duration: 1.5, ease: "power2.inOut" }, 0)
+      .to(ref.current, { opacity: 0, duration: 0.6, ease: "power1.out" }, "+=0.1")
+      .set(ref.current, { display: "none" });
+  }, [onDone]);
+
+  return (
+    <div ref={ref} className="fixed inset-0 z-[100] loader-bg flex flex-col items-center justify-center p-6 text-center">
+      <div id="loader-diver" className="text-7xl mb-6 drop-shadow-[0_0_20px_rgba(63,216,201,0.6)]">🤿</div>
+      <div className="font-display italic text-3xl text-teal-100 tracking-wide mb-2">Descending into the deep…</div>
+      <div className="text-xs tracking-[0.3em] text-teal-400/80 mb-8 font-mono">PRIYADARSINI K J — DIGITAL OCEAN PORTFOLIO</div>
+      <div className="w-64 sm:w-80 h-[3px] bg-white/10 rounded-full overflow-hidden shadow-inner">
+        <div id="loader-bar-fill" className="h-full w-0 rounded-full" style={{ background: "linear-gradient(90deg, #0f4c75, #7ff4e0)" }}></div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   SIDE NAVIGATION & CONTROLS
+============================================================ */
+function SideNav({ active, soundOn, setSoundOn, dark, setDark }) {
+  const scrollTo = (id) => {
+    audioEngine.playBubble();
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleSoundToggle = () => {
+    const nextState = !soundOn;
+    setSoundOn(nextState);
+    audioEngine.toggle(nextState);
+  };
+
+  return (
+    <>
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-30 hidden lg:flex flex-col gap-3 items-end">
+        {SECTIONS.map(id => (
+          <button 
+            key={id} 
+            onClick={() => scrollTo(id)} 
+            className="group flex items-center gap-3 py-1 cursor-pointer"
+          >
+            <span className="text-[11px] tracking-wider text-teal-200/0 group-hover:text-teal-200/90 transition-all duration-300 whitespace-nowrap bg-black/40 px-2 py-0.5 rounded backdrop-blur-sm">
+              {SECTION_LABELS[id]}
+            </span>
+            <span className={`nav-dot w-2.5 h-2.5 rounded-full ${active === id ? 'active' : 'bg-white/30 group-hover:bg-teal-300/70'}`}></span>
+          </button>
+        ))}
+      </div>
+
+      <div className="fixed top-5 right-6 z-30 flex gap-3">
+        <button 
+          onClick={handleSoundToggle} 
+          className={`glass w-11 h-11 rounded-full flex items-center justify-center text-teal-200 text-base hover:scale-110 transition-transform ${soundOn ? 'sound-pulse border-teal-300' : ''}`} 
+          title={soundOn ? "Mute ambient ocean audio" : "Enable ambient ocean audio & sound FX"}
+        >
+          {soundOn ? "🔊" : "🔇"}
+        </button>
+        <button 
+          onClick={() => { audioEngine.playBubble(); setDark(d => !d); }} 
+          className="glass w-11 h-11 rounded-full flex items-center justify-center text-teal-200 text-base hover:scale-110 transition-transform" 
+          title="Toggle depth lighting mode"
+        >
+          {dark ? "🌑" : "🌊"}
+        </button>
+      </div>
+
+      <div className="fixed top-5 left-6 z-30 glass px-4 py-2 rounded-full flex items-center gap-2 cursor-pointer hover:border-teal-300/40 transition-colors" onClick={() => scrollTo("hero")}>
+        <span className="w-2 h-2 rounded-full bg-teal-300 animate-ping"></span>
+        <span className="font-display italic text-sm font-semibold tracking-wider text-teal-100">{PERSONAL_INFO.name}</span>
+      </div>
+    </>
+  );
+}
+
+/* ============================================================
+   HERO SECTION (Surface Level - 0m)
+============================================================ */
+function Hero({ onDive }) {
+  const typeRef = useRef(null);
+
+  useEffect(() => {
+    gsap.from("#hero-title span", { y: 90, opacity: 0, stagger: 0.05, duration: 1.2, ease: "power4.out", delay: 0.3 });
+    gsap.from("#hero-sub", { y: 20, opacity: 0, duration: 1, delay: 1.1 });
+    gsap.from("#dive-btn", { y: 20, opacity: 0, duration: 1, delay: 1.4 });
+
+    const phrases = ["MCA Student @ Sona College", "Web Designer & Developer", "Prompt Engineering Specialist", "Cloud & Full Stack Enthusiast"];
+    let pi = 0, ci = 0, deleting = false;
+    const el = typeRef.current;
+
+    const tick = () => {
+      if (!el) return;
+      const current = phrases[pi];
+      if (!deleting) {
+        ci++;
+        el.textContent = current.slice(0, ci);
+        if (ci === current.length) { deleting = true; setTimeout(tick, 1600); return; }
+      } else {
+        ci--;
+        el.textContent = current.slice(0, ci);
+        if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+      }
+      setTimeout(tick, deleting ? 35 : 75);
+    };
+    const timer = setTimeout(tick, 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
+      <div className="caustics"></div>
+      
+      <div className="absolute inset-0 opacity-30 pointer-events-none" style={{
+        background: "linear-gradient(115deg, transparent 30%, rgba(127,244,224,0.08) 45%, transparent 60%), linear-gradient(105deg, transparent 50%, rgba(63,216,201,0.06) 62%, transparent 75%)"
+      }}></div>
+
+      <p className="section-eyebrow mb-6 tracking-[0.35em] text-teal-300">Dive Into My Digital Ocean</p>
+      
+      <h1 id="hero-title" className="font-display text-[12vw] sm:text-[10vw] md:text-[6.5rem] leading-[0.92] font-medium text-glow overflow-hidden max-w-6xl">
+        {PERSONAL_INFO.name.split("").map((c, i) => (
+          <span key={i} className="inline-block">{c === " " ? "\u00A0" : c}</span>
+        ))}
+      </h1>
+      
+      <div id="hero-sub" className="mt-6 h-8 flex items-center justify-center">
+        <span ref={typeRef} className="text-teal-200 text-lg sm:text-2xl font-light tracking-wide"></span>
+        <span className="w-[2px] h-6 bg-teal-300 ml-1.5 animate-pulse"></span>
+      </div>
+
+      <button 
+        id="dive-btn" 
+        onClick={() => { audioEngine.playBubble(); onDive(); }} 
+        className="btn-primary mt-12 px-10 py-4 rounded-full text-xs sm:text-sm tracking-[0.2em] uppercase flex items-center gap-3 group"
+      >
+        <span>Explore Portfolio</span>
+        <span className="text-lg group-hover:translate-y-1 transition-transform">↓</span>
+      </button>
+
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 depth-marker animate-bounce flex flex-col items-center gap-1 opacity-70">
+        <span>Surface · 0m</span>
+        <span className="text-xs">▼</span>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   ABOUT SECTION (Coral Reef - 20m)
+============================================================ */
+function About() {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    gsap.from(ref.current.querySelectorAll(".reveal"), {
+      scrollTrigger: { trigger: ref.current, start: "top 70%" },
+      y: 50, opacity: 0, stagger: 0.15, duration: 1, ease: "power3.out"
+    });
+    gsap.to(".coral", {
+      rotate: 4, transformOrigin: "bottom center", duration: 2.8, repeat: -1, yoyo: true, ease: "sine.inOut",
+      stagger: { each: 0.3, from: "random" }
+    });
+  }, []);
+
+  return (
+    <section id="about" ref={ref} className="relative min-h-screen flex items-center px-6 py-32">
+      <div className="caustics"></div>
+      
+      <div className="absolute bottom-0 left-0 right-0 h-44 flex items-end justify-around opacity-40 pointer-events-none overflow-hidden">
+        {[...Array(11)].map((_, i) => (
+          <div key={i} className="coral rounded-t-full" style={{
+            width: 14 + (i % 3) * 12, height: 70 + (i % 4) * 35,
+            background: i % 2 ? "linear-gradient(180deg,#e8886a,#a8442f)" : "linear-gradient(180deg,#3fd8c9,#0f4c75)"
+          }}></div>
+        ))}
+      </div>
+
+      <div className="max-w-5xl mx-auto grid md:grid-cols-[280px_1fr] gap-12 sm:gap-16 items-center relative z-10">
+        <div className="reveal flex justify-center">
+          <div className="glass-strong rounded-3xl p-3 w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center relative group">
+            <div className="absolute inset-0 rounded-3xl transition-opacity duration-500 group-hover:opacity-100" style={{ boxShadow: "0 0 60px rgba(63,216,201,0.4)" }}></div>
+            <div className="w-full h-full rounded-2xl bg-gradient-to-br from-ocean-500 via-ocean-400 to-deep-700 flex flex-col items-center justify-center border border-teal-300/30 p-6 text-center">
+              <div className="text-5xl font-display text-teal-200 mb-2 gold-glow">PKJ</div>
+              <span className="text-xs uppercase tracking-widest text-teal-300/90 font-semibold mb-1">Priyadarsini K J</span>
+              <span className="text-[11px] text-teal-200/70 font-mono">Salem, Tamil Nadu</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p className="reveal section-eyebrow mb-4">About · Coral Reef, 20m</p>
+          <h2 className="reveal font-display text-4xl sm:text-5xl mb-6 text-glow">Career Objective</h2>
+          <p className="reveal text-teal-100/95 text-base sm:text-lg leading-relaxed mb-6 font-light">
+            {PERSONAL_INFO.objective}
+          </p>
+          <div className="reveal flex flex-wrap gap-3">
+            <span className="text-xs px-3.5 py-1.5 rounded-full bg-teal-400/10 border border-teal-400/30 text-teal-200 font-mono">Web Designing</span>
+            <span className="text-xs px-3.5 py-1.5 rounded-full bg-teal-400/10 border border-teal-400/30 text-teal-200 font-mono">Prompt Engineering</span>
+            <span className="text-xs px-3.5 py-1.5 rounded-full bg-teal-400/10 border border-teal-400/30 text-teal-200 font-mono">Public Speaking & Oratory</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   EDUCATION SECTION (Timeline / Ancient Ruins - 40m)
+============================================================ */
+function Education() {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    gsap.utils.toArray(".edu-card").forEach((card, i) => {
+      gsap.from(card, {
+        scrollTrigger: { trigger: card, start: "top 80%" },
+        x: i % 2 === 0 ? -60 : 60, opacity: 0, duration: 0.9, ease: "power3.out"
+      });
+    });
+    gsap.fromTo(".timeline-line", { scaleY: 0 }, {
+      scaleY: 1, transformOrigin: "top",
+      scrollTrigger: { trigger: ref.current, start: "top 70%", end: "bottom 80%", scrub: 1 }
+    });
+    gsap.to("#turtle", {
+      scrollTrigger: { trigger: ref.current, start: "top 70%", end: "bottom 80%", scrub: 1 },
+      y: "85%", ease: "none"
+    });
+  }, []);
+
+  return (
+    <section id="education" ref={ref} className="relative min-h-screen px-6 py-32">
+      <div className="caustics"></div>
+      
+      <div className="max-w-3xl mx-auto text-center mb-20">
+        <p className="section-eyebrow mb-4">Education · Ancient Ruins, 40m</p>
+        <h2 className="font-display text-4xl sm:text-5xl text-glow">Charted Waters of Learning</h2>
+      </div>
+
+      <div className="relative max-w-3xl mx-auto">
+        <div className="timeline-line absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px]"></div>
+        <div id="turtle" className="absolute left-1/2 -translate-x-1/2 top-0 text-4xl -ml-2 z-20 transition-transform">🐢</div>
+
+        <div className="flex flex-col gap-12 sm:gap-16">
+          {EDUCATION.map((e, i) => (
+            <div key={e.title} className={`edu-card flex ${i % 2 === 0 ? 'justify-start md:pr-12' : 'justify-end md:pl-12'}`}>
+              <div className="glass rounded-2xl p-6 sm:p-8 w-full md:w-[calc(50%-1.5rem)] hover:border-teal-300/40 transition-colors">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="depth-marker text-teal-300">{e.year}</span>
+                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-teal-400/10 border border-teal-400/20 text-teal-200 font-semibold">{e.score}</span>
+                </div>
+                <h3 className="font-display text-2xl text-teal-100 mb-1 font-medium">{e.title}</h3>
+                <p className="text-teal-200/80 text-sm font-light">{e.place}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   SKILLS SECTION (School of Fish - 60m)
+============================================================ */
+function ProgressRing({ level, color }) {
+  const r = 28, c = 2 * Math.PI * r;
+  const [offset, setOffset] = useState(c);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    gsap.to({}, {
+      scrollTrigger: { trigger: ref.current, start: "top 85%", once: true },
+      onStart: () => setOffset(c - (level / 100) * c)
+    });
+  }, [c, level]);
+
+  return (
+    <svg ref={ref} width="72" height="72" className="progress-ring -rotate-90">
+      <circle cx="36" cy="36" r={r} stroke="rgba(255,255,255,0.1)" strokeWidth="4.5" fill="none" />
+      <circle cx="36" cy="36" r={r} stroke={color} strokeWidth="4.5" fill="none"
+        strokeDasharray={c} strokeDashoffset={offset} strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function Skills() {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    gsap.from(".fish-chip", {
+      scrollTrigger: { trigger: ref.current, start: "top 75%" },
+      scale: 0, opacity: 0, stagger: 0.06, duration: 0.7, ease: "back.out(1.7)"
+    });
+  }, []);
+
+  return (
+    <section id="skills" ref={ref} className="relative min-h-screen px-6 py-32">
+      <div className="caustics"></div>
+
+      <div className="max-w-3xl mx-auto text-center mb-16">
+        <p className="section-eyebrow mb-4">Skills · School of Fish, 60m</p>
+        <h2 className="font-display text-4xl sm:text-5xl text-glow">Currents I Navigate</h2>
+      </div>
+
+      <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
+        {SKILLS.map((s, i) => (
+          <div 
+            key={s.name} 
+            className="fish-chip glass rounded-2xl p-4 flex flex-col items-center text-center cursor-pointer hover:border-teal-300/40" 
+            style={{ animationDelay: `${i * 0.2}s` }}
+            onClick={() => audioEngine.playBubble()}
+          >
+            <div className="relative flex items-center justify-center mb-2">
+              <ProgressRing level={s.level} color={s.color} />
+              <span className="absolute text-xs font-bold text-teal-100">{s.level}%</span>
+            </div>
+            <p className="text-xs font-medium text-teal-100/90 leading-tight mb-1">{s.name}</p>
+            <span className="text-[10px] text-teal-300/60 font-mono uppercase">{s.category}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   PROJECTS SECTION (Shipwreck / Treasure Chest - 80m)
+============================================================ */
+function ProjectChest({ project, index }) {
+  const [open, setOpen] = useState(false);
+  const burstRef = useRef(null);
+
+  const handleOpen = () => {
+    audioEngine.playBubble();
+    setOpen(o => !o);
+    if (!open && burstRef.current) {
+      const particles = burstRef.current.querySelectorAll(".gold-particle");
+      gsap.fromTo(particles, { x: 0, y: 0, opacity: 1, scale: 1 }, {
+        x: () => (Math.random() - 0.5) * 260,
+        y: () => -Math.random() * 180 - 20,
+        opacity: 0, scale: 0.2, duration: 1.2, ease: "power2.out", stagger: 0.02
+      });
+    }
+  };
+
+  return (
+    <div className="glass-strong rounded-3xl p-8 relative overflow-hidden transition-all duration-300 hover:border-teal-300/40">
+      <div ref={burstRef} className="absolute left-1/2 top-10 pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <span key={i} className="gold-particle absolute w-2.5 h-2.5 rounded-full" style={{ background: "var(--gold-bright)", boxShadow: "0 0 8px var(--gold)" }}></span>
+        ))}
+      </div>
+
+      <div className="flex items-start justify-between mb-4">
+        <div>
+          <span className="depth-marker mb-1 block">Wreck 0{index + 1} · {project.tagline}</span>
+          <h3 className="font-display text-3xl text-teal-100 gold-glow">{project.name}</h3>
+        </div>
+        <button 
+          onClick={handleOpen} 
+          className="text-4xl hover:scale-125 transition-transform cursor-pointer p-1" 
+          title={open ? "Close Treasure Chest" : "Open Treasure Chest"}
+        >
+          {open ? "📖" : "🧰"}
+        </button>
+      </div>
+
+      <div className={`overflow-hidden transition-all duration-500 ${open ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+        <p className="text-teal-100/90 leading-relaxed text-sm sm:text-base mb-5 font-light">{project.desc}</p>
+        
+        <div className="flex flex-wrap gap-2 mb-6">
+          {project.stack.map(t => (
+            <span key={t} className="text-xs px-3 py-1 rounded-full border border-teal-300/30 bg-teal-400/10 text-teal-200 font-mono">{t}</span>
+          ))}
+        </div>
+
+        <div className="flex gap-4">
+          <a href={project.github} target="_blank" rel="noopener noreferrer" className="btn-outline px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center gap-2">
+            <span>GitHub</span> ↗
+          </a>
+          <a href={project.demo} target="_blank" rel="noopener noreferrer" className="btn-primary px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center gap-2">
+            <span>Live Demo</span> ↗
+          </a>
+        </div>
+      </div>
+
+      {!open && (
+        <p className="text-teal-300/60 text-xs tracking-wider uppercase mt-4 flex items-center gap-2 font-mono">
+          <span>Click chest icon to unlock details</span> →
+        </p>
+      )}
+    </div>
+  );
+}
+
+function Projects() {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    gsap.from(".ship-card", {
+      scrollTrigger: { trigger: ref.current, start: "top 70%" },
+      y: 80, opacity: 0, stagger: 0.2, duration: 1, ease: "power3.out"
+    });
+  }, []);
+
+  return (
+    <section id="projects" ref={ref} className="relative min-h-screen px-6 py-32">
+      <div className="caustics"></div>
+
+      <div className="max-w-3xl mx-auto text-center mb-16">
+        <p className="section-eyebrow mb-4">Projects · Shipwreck, 80m</p>
+        <h2 className="font-display text-4xl sm:text-5xl text-glow">Treasures Recovered</h2>
+      </div>
+
+      <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+        {PROJECTS.map((p, i) => (
+          <div key={p.name} className="ship-card">
+            <ProjectChest project={p} index={i} />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   CERTIFICATE MODAL POPUP (Includes Image Preview)
+============================================================ */
+function CertModal({ item, onClose }) {
+  if (!item) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-6 animate-fadeIn" onClick={() => { audioEngine.playBubble(); onClose(); }}>
+      <div 
+        className="glass-strong rounded-3xl p-6 sm:p-8 max-w-xl w-full text-center relative border border-teal-300/40 max-h-[90vh] overflow-y-auto" 
+        onClick={e => e.stopPropagation()}
+        style={{ boxShadow: "0 0 90px rgba(63,216,201,0.45)" }}
+      >
+        <button 
+          onClick={() => { audioEngine.playBubble(); onClose(); }} 
+          className="absolute top-4 right-5 text-teal-200 text-2xl hover:text-white transition-colors"
+        >
+          ×
+        </button>
+
+        {item.img ? (
+          <div className="mb-4 rounded-2xl overflow-hidden border border-teal-300/30 shadow-lg max-h-72 flex items-center justify-center bg-black/50 p-2">
+            <img src={encodeURI(item.img)} alt={item.title} className="w-full h-full object-contain max-h-64 rounded-xl" />
+          </div>
+        ) : (
+          <div className="text-6xl mb-3">🏅</div>
+        )}
+
+        <h3 className="font-display text-3xl text-teal-100 mb-1">{item.title}</h3>
+        <p className="text-teal-300 text-sm font-mono mb-3">{item.org || "Certification"}</p>
+        <p className="text-teal-100/85 leading-relaxed text-sm sm:text-base mb-5 font-light">{item.desc}</p>
+
+        {item.skillsLearned && (
+          <div className="flex flex-wrap justify-center gap-2 mb-5">
+            {item.skillsLearned.map(sk => (
+              <span key={sk} className="text-xs px-2.5 py-1 rounded-md bg-teal-300/10 border border-teal-300/30 text-teal-200 font-mono">{sk}</span>
+            ))}
+          </div>
+        )}
+
+        <div className="flex justify-center gap-4">
+          {item.img && (
+            <a 
+              href={encodeURI(item.img)} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="btn-outline px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center gap-2"
+            >
+              <span>View Full Certificate</span> ↗
+            </a>
+          )}
+          <button 
+            onClick={() => { audioEngine.playBubble(); onClose(); }}
+            className="btn-primary px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider"
+          >
+            Close Modal
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   INTERNSHIP SECTION (Jellyfish Lab - 100m)
+============================================================ */
+function Internship() {
+  const ref = useRef(null);
+  const [active, setActive] = useState(null);
+
+  useEffect(() => {
+    gsap.from(".jelly-card", {
+      scrollTrigger: { trigger: ref.current, start: "top 70%" },
+      y: 60, opacity: 0, stagger: 0.2, duration: 1
+    });
+    gsap.to(".jelly-icon", {
+      y: -14, duration: 2.4, repeat: -1, yoyo: true, ease: "sine.inOut", stagger: 0.4
+    });
+  }, []);
+
+  return (
+    <section id="internship" ref={ref} className="relative min-h-screen px-6 py-32">
+      <div className="caustics"></div>
+
+      <div className="max-w-3xl mx-auto text-center mb-16">
+        <p className="section-eyebrow mb-4">Internship · Jellyfish Lab, 100m</p>
+        <h2 className="font-display text-4xl sm:text-5xl text-glow">Experience in the Glow</h2>
+      </div>
+
+      <div className="max-w-3xl mx-auto">
+        {INTERNSHIPS.map(it => (
+          <div 
+            key={it.title} 
+            onClick={() => { audioEngine.playBubble(); setActive(it); }}
+            className="jelly-card glass rounded-3xl p-8 cursor-pointer hover:border-teal-300/60 transition-all hover:-translate-y-2 group"
+          >
+            <div className="flex items-center gap-4 mb-4">
+              <div className="jelly-icon text-5xl">🪼</div>
+              <div>
+                <span className="text-xs font-mono text-teal-300 uppercase tracking-widest block">{it.duration}</span>
+                <h3 className="font-display text-3xl text-teal-100 group-hover:text-teal-300 transition-colors">{it.title}</h3>
+                <p className="text-teal-200/80 text-sm font-semibold">{it.org}</p>
+              </div>
+            </div>
+            <p className="text-teal-100/85 text-base leading-relaxed font-light mb-6">{it.desc}</p>
+            <p className="text-xs text-teal-300/80 uppercase tracking-widest font-mono group-hover:translate-x-1 transition-transform">
+              View Internship Certificate →
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <CertModal item={active} onClose={() => setActive(null)} />
+    </section>
+  );
+}
+
+/* ============================================================
+   CERTIFICATION SECTION (Octopus Cave - 120m)
+============================================================ */
+function Certification() {
+  const ref = useRef(null);
+  const [active, setActive] = useState(null);
+
+  useEffect(() => {
+    gsap.from(".crystal-card", {
+      scrollTrigger: { trigger: ref.current, start: "top 70%" },
+      scale: 0.7, opacity: 0, stagger: 0.12, duration: 0.8, ease: "back.out(1.6)"
+    });
+  }, []);
+
+  const colors = ["#3fd8c9", "#7ff4e0", "#c9a8ff", "#5cc8ff", "#e8c17a", "#ff9d7a"];
+
+  return (
+    <section id="certification" ref={ref} className="relative min-h-screen px-6 py-32">
+      <div className="caustics"></div>
+
+      <div className="max-w-3xl mx-auto text-center mb-16">
+        <p className="section-eyebrow mb-4">Certifications · Octopus Cave, 120m</p>
+        <h2 className="font-display text-4xl sm:text-5xl text-glow">Crystals of Proof</h2>
+      </div>
+
+      <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+        {CERTIFICATIONS.map((c, i) => (
+          <div 
+            key={c.title} 
+            onClick={() => { audioEngine.playBubble(); setActive(c); }} 
+            className="crystal-card flex flex-col items-center cursor-pointer group"
+          >
+            <div 
+              className="crystal w-36 h-44 flex flex-col items-center justify-center text-center p-4 relative overflow-hidden"
+              style={{ background: `linear-gradient(160deg, ${colors[i % colors.length]}55, #06192c)`, boxShadow: `0 0 40px ${colors[i % colors.length]}45` }}
+            >
+              {c.img ? (
+                <img src={encodeURI(c.img)} alt={c.title} className="w-12 h-12 object-cover rounded-lg mb-2 border border-white/20 opacity-90 group-hover:scale-110 transition-transform" />
+              ) : (
+                <span className="text-3xl mb-2">💎</span>
+              )}
+              <span className="text-[11px] text-teal-50 font-semibold leading-snug">{c.title}</span>
+            </div>
+            <span className="text-[10px] text-teal-300/70 mt-2.5 font-mono uppercase tracking-wider group-hover:text-teal-200">Inspect Certificate</span>
+          </div>
+        ))}
+      </div>
+
+      <CertModal item={active} onClose={() => setActive(null)} />
+    </section>
+  );
+}
+
+/* ============================================================
+   ACHIEVEMENTS & CO-CURRICULAR SECTION (Pearl Bed - 140m)
+============================================================ */
+function Achievements() {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    gsap.from(".pearl-card", {
+      scrollTrigger: { trigger: ref.current, start: "top 75%" },
+      y: 40, opacity: 0, stagger: 0.15, duration: 0.9
+    });
+  }, []);
+
+  return (
+    <section id="achievements" ref={ref} className="relative min-h-screen px-6 py-32">
+      <div className="caustics"></div>
+
+      <div className="max-w-3xl mx-auto text-center mb-16">
+        <p className="section-eyebrow mb-4">Achievements & Activities · Pearl Bed, 140m</p>
+        <h2 className="font-display text-4xl sm:text-5xl text-glow">Pearls & Milestones Collected</h2>
+      </div>
+
+      <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-8 mb-16">
+        {ACHIEVEMENTS.map(a => (
+          <div key={a.title} className="pearl-card glass rounded-3xl p-8 flex gap-5 items-start hover:border-teal-300/40 transition-colors">
+            <div className="w-14 h-14 rounded-full flex-shrink-0 mt-1" style={{
+              background: "radial-gradient(circle at 35% 30%, #ffffff, #f6dca0 45%, #b98f4f 100%)",
+              boxShadow: "0 0 25px rgba(246,220,160,0.6)"
+            }}></div>
+            <div>
+              <span className="text-[10px] font-mono text-teal-300 uppercase tracking-widest block mb-1">{a.category}</span>
+              <h3 className="font-display text-2xl text-teal-100 mb-2 font-medium">{a.title}</h3>
+              <p className="text-teal-100/80 text-sm leading-relaxed font-light">{a.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="max-w-4xl mx-auto">
+        <h3 className="text-center font-display text-2xl text-teal-200 mb-8 tracking-wide">Co-Curricular Workshops & Webinars</h3>
+        <div className="grid sm:grid-cols-2 gap-6">
+          {COCURRICULAR.map(c => (
+            <div key={c.title} className="pearl-card glass rounded-2xl p-6 hover:border-teal-300/30 transition-colors">
+              <span className="text-xs font-mono text-teal-300 font-semibold block mb-1">{c.org}</span>
+              <h4 className="font-display text-xl text-teal-100 mb-1">{c.title}</h4>
+              <p className="text-teal-100/75 text-sm font-light leading-relaxed">{c.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   RESUME SECTION (Open Water - 160m)
+============================================================ */
+function Resume() {
+  const ref = useRef(null);
+  const burstRef = useRef(null);
+
+  useEffect(() => {
+    gsap.from(".whale-content", {
+      scrollTrigger: { trigger: ref.current, start: "top 70%" },
+      y: 60, opacity: 0, duration: 1
+    });
+    gsap.to("#whale-emoji", { x: 25, duration: 4.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
+  }, []);
+
+  const handleDownload = () => {
+    audioEngine.playBubble();
+    if (burstRef.current) {
+      const bubbles = burstRef.current.querySelectorAll(".burst-bubble");
+      gsap.fromTo(bubbles, { x: 0, y: 0, opacity: 1, scale: 0.4 }, {
+        x: () => (Math.random() - 0.5) * 280, y: () => -Math.random() * 200 - 30,
+        opacity: 0, scale: 1.2, duration: 1.3, ease: "power2.out", stagger: 0.015
+      });
+    }
+  };
+
+  return (
+    <section id="resume" ref={ref} className="relative min-h-screen flex items-center justify-center px-6 py-32 text-center">
+      <div className="caustics"></div>
+
+      <div className="whale-content max-w-xl relative z-10">
+        <div id="whale-emoji" className="text-8xl mb-6 inline-block">🐋</div>
+        <p className="section-eyebrow mb-4">Resume · Open Water, 160m</p>
+        <h2 className="font-display text-4xl sm:text-5xl text-glow mb-6">Carry My Story With You</h2>
+        <p className="text-teal-100/85 mb-10 text-base sm:text-lg font-light leading-relaxed">
+          Download my official resume PDF for a complete detailed overview of my MCA degree, technical skills, and project experience.
+        </p>
+
+        <div ref={burstRef} className="relative inline-block">
+          {[...Array(18)].map((_, i) => (
+            <span key={i} className="burst-bubble absolute left-1/2 top-1/2 w-2.5 h-2.5 rounded-full bg-teal-200/80 pointer-events-none"></span>
+          ))}
+          <a 
+            href={PERSONAL_INFO.resumeFile} 
+            download="Priyadarsini_KJ_Resume.pdf"
+            onClick={handleDownload} 
+            className="btn-primary px-10 py-4 rounded-full text-xs sm:text-sm tracking-[0.2em] uppercase inline-block font-bold"
+          >
+            Download Resume PDF
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   CONTACT SECTION (The Abyss - 200m)
+============================================================ */
+function Contact() {
+  const ref = useRef(null);
+  const [selectedIntent, setSelectedIntent] = useState("Hiring & MCA Opportunities");
+  const [copied, setCopied] = useState(false);
+  const [bubbles, setBubbles] = useState([]);
+  const [pingCount, setPingCount] = useState(1);
+
+  const intents = [
+    { id: "hiring", label: "💼 Hiring & MCA Roles", subject: "Opportunity Inquiry - MCA Graduate" },
+    { id: "fullstack", label: "⚡ Full-Stack & Cloud Project", subject: "Project Collaboration Request" },
+    { id: "ai", label: "🧠 Prompt Engineering / AI", subject: "AI & Prompt Engineering Inquiry" },
+    { id: "chat", label: "☕ Tech Discussion & Connect", subject: "Connecting via Ocean Portfolio" }
+  ];
+
+  useEffect(() => {
+    gsap.from(".abyss-reveal", {
+      scrollTrigger: { trigger: ref.current, start: "top 70%" },
+      y: 50, opacity: 0, stagger: 0.15, duration: 1
+    });
+    gsap.to(".bio-plant", {
+      rotate: 6, transformOrigin: "bottom center", duration: 3.2, repeat: -1, yoyo: true, ease: "sine.inOut", stagger: 0.4
+    });
+  }, []);
+
+  const handleTransmit = () => {
+    if (typeof audioEngine !== "undefined" && audioEngine.playBubble) {
+      audioEngine.playBubble();
+    }
+    setPingCount(prev => prev + 1);
+
+    // Copy Email to Clipboard
+    navigator.clipboard.writeText(PERSONAL_INFO.email).catch(() => {});
+    setCopied(true);
+    setTimeout(() => setCopied(false), 4500);
+
+    // Trigger Mailto prefilled link after small ripple effect
+    const chosen = intents.find(i => i.label === selectedIntent) || intents[0];
+    const mailtoUrl = `mailto:${PERSONAL_INFO.email}?subject=${encodeURIComponent(chosen.subject)}&body=${encodeURIComponent(`Hello Priyadarsini,\n\nI explored your Ocean Portfolio and would like to connect regarding: ${chosen.label}.\n\nBest regards,`)}`;
+    
+    setTimeout(() => {
+      window.location.href = mailtoUrl;
+    }, 400);
+  };
+
+  const triggerBubblePulse = () => {
+    if (typeof audioEngine !== "undefined" && audioEngine.playBubble) {
+      audioEngine.playBubble();
+    }
+    const newBubbles = Array.from({ length: 8 }, (_, i) => ({
+      id: Date.now() + i,
+      left: Math.random() * 80 + 10,
+      size: Math.random() * 12 + 6,
+      duration: Math.random() * 1.5 + 1.5
+    }));
+    setBubbles(prev => [...prev.slice(-15), ...newBubbles]);
+  };
+
+  return (
+    <section 
+      id="contact" 
+      ref={ref} 
+      className="relative min-h-screen px-6 py-32 flex flex-col items-center justify-center overflow-hidden"
+      style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(15,76,117,0.35), rgba(1,5,10,0.95) 75%)" }}
+    >
+      <div className="caustics"></div>
+
+      {/* Underwater Plants */}
+      <div className="absolute bottom-0 left-0 right-0 h-36 flex items-end justify-around opacity-30 pointer-events-none">
+        {[...Array(9)].map((_, i) => (
+          <div key={i} className="bio-plant rounded-t-full" style={{
+            width: 7, height: 60 + (i % 3) * 35, background: "linear-gradient(180deg,#7ff4e0,#0a2f4d)"
+          }}></div>
+        ))}
+      </div>
+
+      {/* Header */}
+      <div className="abyss-reveal text-center mb-8 max-w-2xl relative z-10">
+        <p className="section-eyebrow mb-3 flex items-center justify-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
+          ABYSS TELEMETRY TERMINAL · 200M DEPTH
+        </p>
+        <h2 className="font-display text-4xl sm:text-6xl text-glow mb-4">Transmit a Deep Ocean Beacon</h2>
+        <p className="text-teal-200/85 text-sm sm:text-base font-light max-w-lg mx-auto">
+          Skip standard web forms. Choose a transmission frequency below to ping my direct beacon, launch instant mail, or copy contact credentials.
+        </p>
+      </div>
+
+      {/* Main Interactive Sonar Console Box */}
+      <div className="abyss-reveal glass-strong rounded-3xl p-6 sm:p-10 max-w-2xl w-full relative z-10 flex flex-col items-center gap-8 border border-teal-300/30 shadow-[0_0_50px_rgba(63,216,201,0.15)]">
+        
+        {/* Sonar Radar Screen */}
+        <div 
+          onClick={triggerBubblePulse}
+          className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-full border-2 border-teal-400/40 bg-abyss-900/80 flex items-center justify-center cursor-pointer group hover:border-teal-300 transition-all overflow-hidden shadow-[inset_0_0_30px_rgba(63,216,201,0.25)]"
+          title="Click Sonar to Emit Hydro Pulse"
+        >
+          {/* Radar Circles */}
+          <div className="absolute inset-4 rounded-full border border-teal-500/25 pointer-events-none"></div>
+          <div className="absolute inset-12 rounded-full border border-teal-500/20 pointer-events-none"></div>
+          <div className="absolute inset-20 rounded-full border border-teal-500/15 pointer-events-none"></div>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-full h-[1px] bg-teal-500/20"></div>
+            <div className="h-full w-[1px] bg-teal-500/20 absolute"></div>
+          </div>
+
+          {/* Rotating Sweep Line */}
+          <div className="radar-sweep absolute inset-0 rounded-full pointer-events-none" style={{
+            background: "conic-gradient(from 0deg, transparent 0deg, transparent 300deg, rgba(127,244,224,0.45) 360deg)"
+          }}></div>
+
+          {/* Pulsing Sonar Wave Rings */}
+          <div className="sonar-wave absolute inset-0 rounded-full border-2 border-teal-400/60 pointer-events-none"></div>
+
+          {/* Center Target Node */}
+          <div className="relative z-10 flex flex-col items-center justify-center text-center p-2">
+            <span className="text-3xl mb-1 group-hover:scale-125 transition-transform">📡</span>
+            <span className="text-[10px] font-mono tracking-widest text-teal-300 font-bold uppercase">SONAR BEACON</span>
+            <span className="text-[9px] font-mono text-teal-400/70">PINGS SENT: #{pingCount}</span>
+          </div>
+
+          {/* Spawns Dynamic Bubbles */}
+          {bubbles.map(b => (
+            <span 
+              key={b.id} 
+              className="bubble-float absolute bottom-2 rounded-full bg-teal-300/80 pointer-events-none"
+              style={{
+                left: `${b.left}%`,
+                width: `${b.size}px`,
+                height: `${b.size}px`,
+                animationDuration: `${b.duration}s`
+              }}
+            />
+          ))}
+        </div>
+
+        <p className="text-xs font-mono text-teal-300/80 text-center -mt-4">
+          💡 Click the radar screen above to launch bioluminescent ocean pulses!
+        </p>
+
+        {/* Intent Frequency Chips */}
+        <div className="w-full">
+          <label className="text-xs uppercase tracking-widest text-teal-300/90 block mb-3 font-mono text-center">
+            Select Transmission Purpose:
+          </label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+            {intents.map((intent) => {
+              const active = selectedIntent === intent.label;
+              return (
+                <button
+                  key={intent.id}
+                  type="button"
+                  onClick={() => {
+                    setSelectedIntent(intent.label);
+                    if (typeof audioEngine !== "undefined" && audioEngine.playBubble) {
+                      audioEngine.playBubble();
+                    }
+                  }}
+                  className={`px-4 py-3 rounded-2xl text-xs font-mono tracking-wider text-left transition-all duration-300 flex items-center justify-between border ${
+                    active
+                      ? "bg-teal-400/20 border-teal-300 text-teal-100 shadow-[0_0_20px_rgba(63,216,201,0.35)] scale-[1.02]"
+                      : "bg-deep-700/40 border-teal-500/20 text-teal-200/70 hover:border-teal-400/50 hover:bg-deep-600/60"
+                  }`}
+                >
+                  <span>{intent.label}</span>
+                  <span className={`w-2.5 h-2.5 rounded-full ${active ? "bg-teal-300 shadow-[0_0_8px_#7ff4e0]" : "bg-teal-900"}`}></span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Transmit Action */}
+        <div className="w-full flex flex-col items-center gap-3">
+          <button 
+            type="button" 
+            onClick={handleTransmit}
+            className="btn-primary w-full py-4 rounded-2xl text-xs font-bold tracking-[0.25em] uppercase flex items-center justify-center gap-3 shadow-[0_0_35px_rgba(63,216,201,0.4)]"
+          >
+            <span>Transmit Beacon Signal</span>
+            <span className="text-base">📡</span>
+          </button>
+
+          {/* Copy Toast notification */}
+          {copied && (
+            <div className="w-full py-2.5 px-4 rounded-xl bg-teal-400/20 border border-teal-300 text-teal-200 text-xs font-mono text-center animate-bounce shadow-[0_0_15px_rgba(127,244,224,0.4)]">
+              ✓ Email address copied ({PERSONAL_INFO.email}) & Mail client launched!
+            </div>
+          )}
+        </div>
+
+        {/* Quick Contact Badge Matrix */}
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 border-t border-teal-500/20 text-xs font-mono">
+          <div 
+            onClick={() => {
+              navigator.clipboard.writeText(PERSONAL_INFO.email);
+              if (typeof audioEngine !== "undefined" && audioEngine.playBubble) audioEngine.playBubble();
+              setCopied(true);
+              setTimeout(() => setCopied(false), 3000);
+            }}
+            className="glass px-4 py-3 rounded-xl flex items-center justify-between cursor-pointer hover:border-teal-300 transition-colors group"
+            title="Click to copy email"
+          >
+            <span className="text-teal-300/80 truncate">📧 {PERSONAL_INFO.email}</span>
+            <span className="text-[10px] text-teal-400 opacity-60 group-hover:opacity-100 uppercase tracking-widest ml-2">Copy</span>
+          </div>
+
+          <div 
+            onClick={() => {
+              navigator.clipboard.writeText(PERSONAL_INFO.phone);
+              if (typeof audioEngine !== "undefined" && audioEngine.playBubble) audioEngine.playBubble();
+              alert(`Phone number ${PERSONAL_INFO.phone} copied to clipboard!`);
+            }}
+            className="glass px-4 py-3 rounded-xl flex items-center justify-between cursor-pointer hover:border-teal-300 transition-colors group"
+            title="Click to copy phone number"
+          >
+            <span className="text-teal-300/80">📞 {PERSONAL_INFO.phone}</span>
+            <span className="text-[10px] text-teal-400 opacity-60 group-hover:opacity-100 uppercase tracking-widest">Copy</span>
+          </div>
+
+          <a 
+            href={PERSONAL_INFO.linkedin} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="glass px-4 py-3 rounded-xl flex items-center justify-between hover:border-teal-300 transition-colors text-teal-300/80"
+          >
+            <span>💼 LinkedIn Beacon</span>
+            <span className="text-teal-300 font-bold">↗</span>
+          </a>
+
+          <div className="glass px-4 py-3 rounded-xl flex items-center justify-between text-teal-300/80">
+            <span>📍 {PERSONAL_INFO.location}</span>
+            <span className="text-[10px] text-teal-400/60 uppercase">200M</span>
+          </div>
+        </div>
+
+      </div>
+
+      <p className="abyss-reveal font-display italic text-2xl sm:text-3xl text-glow mt-16 text-center relative z-10">
+        "Thank You For Exploring My Ocean"
+      </p>
+      <p className="text-xs text-teal-400/50 mt-4 tracking-widest font-mono">© 2026 PRIYADARSINI K J</p>
+    </section>
+  );
+}
+
+/* ============================================================
+   MAIN APPLICATION ROOT
+============================================================ */
+function App() {
+  const [loading, setLoading] = useState(true);
+  const [active, setActive] = useState("hero");
+  const [soundOn, setSoundOn] = useState(false);
+  const [dark, setDark] = useState(true);
+  const diveProgressRef = useRef(0);
+
+  useEffect(() => {
+    if (loading) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActive(entry.target.id);
+        }
+      });
+    }, { threshold: 0.45 });
+
+    SECTIONS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    const st = ScrollTrigger.create({
+      trigger: document.body,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: self => { diveProgressRef.current = self.progress; }
+    });
+
+    return () => {
+      observer.disconnect();
+      st.kill();
+    };
+  }, [loading]);
+
+  const handleDive = () => {
+    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <div className={dark ? "" : "opacity-95"}>
+      {loading && <LoadingScreen onDone={() => setLoading(false)} />}
+      
+      {!loading && (
+        <>
+          <OceanCanvas diveProgressRef={diveProgressRef} />
+          <BubbleTrail />
+          <SideNav active={active} soundOn={soundOn} setSoundOn={setSoundOn} dark={dark} setDark={setDark} />
+          
+          <main className="relative z-10">
+            <Hero onDive={handleDive} />
+            <About />
+            <Education />
+            <Skills />
+            <Projects />
+            <Internship />
+            <Certification />
+            <Achievements />
+            <Resume />
+            <Contact />
+          </main>
+        </>
+      )}
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+
+</body>
+</html>
