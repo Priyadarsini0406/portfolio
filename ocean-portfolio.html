@@ -1485,54 +1485,7 @@ function Contact() {
       {/* Main Interactive Sonar Console Box */}
       <div className="abyss-reveal glass-strong rounded-3xl p-6 sm:p-10 max-w-2xl w-full relative z-10 flex flex-col items-center gap-8 border border-teal-300/30 shadow-[0_0_50px_rgba(63,216,201,0.15)]">
         
-        {/* Sonar Radar Screen */}
-        <div 
-          onClick={triggerBubblePulse}
-          className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-full border-2 border-teal-400/40 bg-abyss-900/80 flex items-center justify-center cursor-pointer group hover:border-teal-300 transition-all overflow-hidden shadow-[inset_0_0_30px_rgba(63,216,201,0.25)]"
-          title="Click Sonar to Emit Hydro Pulse"
-        >
-          {/* Radar Circles */}
-          <div className="absolute inset-4 rounded-full border border-teal-500/25 pointer-events-none"></div>
-          <div className="absolute inset-12 rounded-full border border-teal-500/20 pointer-events-none"></div>
-          <div className="absolute inset-20 rounded-full border border-teal-500/15 pointer-events-none"></div>
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-full h-[1px] bg-teal-500/20"></div>
-            <div className="h-full w-[1px] bg-teal-500/20 absolute"></div>
-          </div>
 
-          {/* Rotating Sweep Line */}
-          <div className="radar-sweep absolute inset-0 rounded-full pointer-events-none" style={{
-            background: "conic-gradient(from 0deg, transparent 0deg, transparent 300deg, rgba(127,244,224,0.45) 360deg)"
-          }}></div>
-
-          {/* Pulsing Sonar Wave Rings */}
-          <div className="sonar-wave absolute inset-0 rounded-full border-2 border-teal-400/60 pointer-events-none"></div>
-
-          {/* Center Target Node */}
-          <div className="relative z-10 flex flex-col items-center justify-center text-center p-2">
-            <span className="text-3xl mb-1 group-hover:scale-125 transition-transform">📡</span>
-            <span className="text-[10px] font-mono tracking-widest text-teal-300 font-bold uppercase">SONAR BEACON</span>
-            <span className="text-[9px] font-mono text-teal-400/70">PINGS SENT: #{pingCount}</span>
-          </div>
-
-          {/* Spawns Dynamic Bubbles */}
-          {bubbles.map(b => (
-            <span 
-              key={b.id} 
-              className="bubble-float absolute bottom-2 rounded-full bg-teal-300/80 pointer-events-none"
-              style={{
-                left: `${b.left}%`,
-                width: `${b.size}px`,
-                height: `${b.size}px`,
-                animationDuration: `${b.duration}s`
-              }}
-            />
-          ))}
-        </div>
-
-        <p className="text-xs font-mono text-teal-300/80 text-center -mt-4">
-          💡 Click the radar screen above to launch bioluminescent ocean pulses!
-        </p>
 
         {/* Intent Frequency Chips */}
         <div className="w-full">
